@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hajj/jadwal_and_manask_al_hajj_page.dart';
+import 'package:hajj/main_page.dart';
+import 'package:hajj/muslium_corner_page.dart';
+import 'package:hajj/personal_info_page.dart';
+import 'package:hajj/helpful_numbers_page.dart';
+import 'package:hajj/travel_instructions_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -29,63 +36,53 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-const List<BottomNavigationBarItem> items = <BottomNavigationBarItem>[
-  BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.home), label: 'الرئيسية'), // Changed
+
+
+const List<BottomNavigationBarItem> bottomNavigationBarItems = <BottomNavigationBarItem>[
+  BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.house), label: 'الرئيسية'), // Changed
   BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.calendar), label: 'جدول و مناسك الحج'), // Changed - using a calculator icon from Font Awesome as an example, you might want a different one
   BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.plane), label: 'تعليمات السفر'), // Changed - using a plus icon, adjust as needed
   BottomNavigationBarItem(
     icon:  FaIcon(FontAwesomeIcons.personPraying),
     label: 'ركن المسلم',
   ),
+  BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.phone), label: 'أرقام تهمك'),
   BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.info), label: 'بياناتي'),
 ];
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  int _selectindex=0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  int _selectedIndex = 0;
+  final List<Widget> _pages =  <Widget>[
+    const MainPage(),
+    const JadwalAndManaskAlHajjPage(),
+    const TravelInstructionsPage(),
+    const MusliumCornerPage(),
+    const HelpfulNumbersPage(),
+    const PersonalInfoPage(),
+    
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
+        title: Align(
+            alignment: Alignment.centerRight,
+            child: Text(widget.title, textDirection: TextDirection.rtl)),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          items: items,
-          currentIndex: _selectindex,
+          items: bottomNavigationBarItems,
+          currentIndex: _selectedIndex,
           selectedItemColor: Colors.amber[800],
           unselectedItemColor: Colors.teal,
           onTap: (int index) {
             setState(() {
-              _selectindex = index ;
+              _selectedIndex = index;
             });
           },
-
       ),
 
       // This trailing comma makes auto-formatting nicer for build methods.
