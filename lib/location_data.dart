@@ -6,30 +6,33 @@ class LocationData {
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+    try {
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
       }
-    }
 
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.',
-      );
-    }
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return Future.error('Location permissions are denied');
+        }
+      }
 
-    var locationData = await Geolocator.getCurrentPosition();
-    double lat = locationData.latitude;
-    double long = locationData.longitude;
-    print("Latitude: $lat, Longitude: $long");
-    return {"locationData": locationData, "lat": lat, "long": long};
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.',
+        );
+      }
+
+      var locationData = await Geolocator.getCurrentPosition();
+      double lat = locationData.latitude;
+      double long = locationData.longitude;
+      print("Latitude: $lat, Longitude: $long");
+      return {"lat": lat, "long": long};
+    } catch (e) {
+      print("Error getting location: $e");
+      return {"lat": 0.0, "long": 0.0};
+    }
   }
 }
-
-

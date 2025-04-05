@@ -10,16 +10,13 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  String locationData = "";
-  double lat = 0.0;
-  double long = 0.0;
+  double? lat;
+  double? long;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Main App"),
-      ),
+      appBar: AppBar(title: const Text("Main App")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -28,14 +25,14 @@ class MainPageState extends State<MainPage> {
               onPressed: () async {
                 final locationInfo = await LocationData().getCurrentLocation();
                 setState(() {
-                  locationData = locationInfo['locationData'] ?? 'Unknown';
-                  lat = locationInfo['lat'] ?? 0.0;
-                  long = locationInfo['long'] ?? 0.0;
+                  lat = locationInfo['lat'];
+                  long = locationInfo['long'];
+                                    print("Latitude: $lat, Longitude: $long");
+                  
                 });
-                            },
+              },
               child: const Text("Get Location"),
             ),
-            Text("Location: $locationData"),
             Text("Latitude: $lat"),
             Text("Longitude: $long"),
           ],
