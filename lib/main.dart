@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:hajj/screens/jadwal_and_manask_al_hajj_page.dart';
 import 'package:hajj/main_page.dart';
 import 'package:hajj/screens/muslium_corner_page.dart';
@@ -33,34 +34,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-const List<BottomNavigationBarItem>
-bottomNavigationBarItems = <BottomNavigationBarItem>[
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.house),
-    label: 'الرئيسية',
-  ), // Changed
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.calendar),
-    label: 'جدول و مناسك الحج',
-  ), // Changed - using a calculator icon from Font Awesome as an example, you might want a different one
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.plane),
-    label: 'تعليمات السفر',
-  ), // Changed - using a plus icon, adjust as needed
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.personPraying),
-    label: 'ركن المسلم',
-  ),
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.phone),
-    label: 'أرقام تهمك',
-  ),
-  BottomNavigationBarItem(
-    icon: FaIcon(FontAwesomeIcons.info),
-    label: 'بياناتي',
-  ),
-];
-
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = <Widget>[
@@ -76,20 +49,68 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: bottomNavigationBarItems,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.teal,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1)),
+          ],
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              child: GNav(
+                rippleColor:
+                    Colors.grey[800]!, // tab button ripple color when pressed
+                hoverColor: Colors.grey[700]!, // tab button hover color
+                haptic: true, // haptic feedback
+                tabBorderRadius: 15,
+                tabActiveBorder: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ), // tab button border
+                tabBorder: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ), // tab button border
+                tabShadow: [
+                  BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8),
+                ], // tab button shadow
+                curve: Curves.easeOutExpo, // tab animation curves
+                duration: Duration(milliseconds: 900), // tab animation duration
+                gap: 8, // the tab button gap between icon and text
+                color: Colors.grey[800], // unselected icon color
+                activeColor: Colors.purple, // selected icon and text color
+                iconSize: 24, // tab button icon size
+                tabBackgroundColor: Colors.purple.withOpacity(
+                  0.1,
+                ), // selected tab background color
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ), // navigation bar padding
+                selectedIndex: _selectedIndex,
+                onTabChange: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                tabs: [
+                  GButton(icon: LineIcons.home, text: 'الرئيسية'),
+                  GButton(icon: LineIcons.calendar, text: 'جدول و مناسك الحج'),
+                  GButton(icon: LineIcons.plane, text: 'تعليمات السفر'),
+                  GButton(icon: LineIcons.user, text: 'ركن المسلم'),
+                  GButton(icon: LineIcons.phone, text: 'أرقام تهمك'),
+                  GButton(icon: LineIcons.info, text: 'بياناتي'),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

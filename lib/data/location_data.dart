@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class LocationData {
   Future<Position> getCurrentLocation() async {
@@ -31,5 +32,24 @@ class LocationData {
     } catch (e) {
       return Future.error('Failed to get current location: $e');
     }
+  }
+
+  Future<String> getLocationName(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latitude,
+        longitude,
+      );
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String name =
+            "${place.locality}, ${place.administrativeArea}, ${place.country}";
+        print("Location Name: $name");
+        return name;
+      }
+    } catch (e) {
+      print("Error getting location name: $e");
+    }
+    return "Unknown Location";
   }
 }

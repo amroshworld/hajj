@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'data/location_data.dart';
 
 class MainPage extends StatefulWidget {
@@ -10,10 +9,12 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  double? lat;
-  double? long;
-  dynamic weatherdata;
-  @override
+  double lat =0.0;
+  double long = 0.0;
+  String locationName = '';
+
+  
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -21,15 +22,30 @@ class MainPageState extends State<MainPage> {
         child: Column(
           children: [
             IconButton(
-              icon: const FaIcon(FontAwesomeIcons.locationDot),
+              icon: const Icon(Icons.location_on),
               onPressed: () async {
-                final locationInfo = await LocationData().getCurrentLocation();
-
-                setState(() {
-                  lat = locationInfo.latitude;
-                  long = locationInfo.longitude;
-                });
+                try {
+                  final locationInfo =
+                      await LocationData().getCurrentLocation();
+                  final locationNameInfo = await LocationData().getLocationName(
+                    lat,
+                    long,
+                  );
+                  setState(() {
+                    lat = locationInfo.latitude;
+                    long = locationInfo.longitude;
+                    locationName = locationNameInfo;
+                  });
+                } catch (e) {
+                  print("Error getting location: $e");
+                }
               },
+            ),
+            Text("Latitude: $lat", style: const TextStyle(fontSize: 16)),
+            Text("Longitude: $long", style: const TextStyle(fontSize: 16)),
+            Text(
+              "Location Name: $locationName",
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
