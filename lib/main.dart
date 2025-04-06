@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hajj/jadwal_and_manask_al_hajj_page.dart';
+import 'package:hajj/screens/jadwal_and_manask_al_hajj_page.dart';
 import 'package:hajj/main_page.dart';
-import 'package:hajj/muslium_corner_page.dart';
-import 'package:hajj/personal_info_page.dart';
-import 'package:hajj/helpful_numbers_page.dart';
-import 'package:hajj/travel_instructions_page.dart';
+import 'package:hajj/screens/muslium_corner_page.dart';
+import 'package:hajj/screens/personal_info_page.dart';
+import 'package:hajj/screens/helpful_numbers_page.dart';
+import 'package:hajj/screens/travel_instructions_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,15 +21,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'زاد الحجاج'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -77,13 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Align(
-          alignment: Alignment.centerRight,
-          child: Text(widget.title, textDirection: TextDirection.rtl),
-        ),
-      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

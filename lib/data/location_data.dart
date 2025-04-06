@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class LocationData {
-  Future<Map<String, dynamic>> getCurrentLocation() async {
+  Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -25,14 +25,11 @@ class LocationData {
         );
       }
 
-      var locationData = await Geolocator.getCurrentPosition();
-      double lat = locationData.latitude;
-      double long = locationData.longitude;
-      print("Latitude: $lat, Longitude: $long");
-      return {"lat": lat, "long": long};
+      Position locationData = await Geolocator.getCurrentPosition();
+
+      return locationData;
     } catch (e) {
-      print("Error getting location: $e");
-      return {"lat": 0.0, "long": 0.0};
+      return Future.error('Failed to get current location: $e');
     }
   }
 }

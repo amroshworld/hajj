@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'location_data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'data/location_data.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,29 +12,25 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   double? lat;
   double? long;
-
+  dynamic weatherdata;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Main App")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            ElevatedButton(
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.locationDot),
               onPressed: () async {
                 final locationInfo = await LocationData().getCurrentLocation();
+
                 setState(() {
-                  lat = locationInfo['lat'];
-                  long = locationInfo['long'];
-                                    print("Latitude: $lat, Longitude: $long");
-                  
+                  lat = locationInfo.latitude;
+                  long = locationInfo.longitude;
                 });
               },
-              child: const Text("Get Location"),
             ),
-            Text("Latitude: $lat"),
-            Text("Longitude: $long"),
           ],
         ),
       ),
