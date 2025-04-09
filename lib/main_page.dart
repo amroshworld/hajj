@@ -9,12 +9,28 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  double lat =0.0;
-  double long = 0.0;
+  double _lat = 0.0;
+  double _long = 0.0;
   String locationName = '';
 
-  
+  double get currentLat => _lat;
+  double get currentLong => _long;
 
+  Future<void> updateLocation() async {
+    try {
+      final locationInfo = await LocationData().getCurrentLocation();
+      final locationNameInfo = await LocationData().getLocationName();
+      setState(() {
+        _lat = locationInfo.latitude;
+        _long = locationInfo.longitude;
+        locationName = locationNameInfo;
+      });
+    } catch (e) {
+      print("Error getting location: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -23,26 +39,10 @@ class MainPageState extends State<MainPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.location_on),
-              onPressed: () async {
-                try {
-                  final locationInfo =
-                      await LocationData().getCurrentLocation();
-                  final locationNameInfo = await LocationData().getLocationName(
-                    lat,
-                    long,
-                  );
-                  setState(() {
-                    lat = locationInfo.latitude;
-                    long = locationInfo.longitude;
-                    locationName = locationNameInfo;
-                  });
-                } catch (e) {
-                  print("Error getting location: $e");
-                }
+              onPressed: () {updateLocation();
               },
             ),
-            Text("Latitude: $lat", style: const TextStyle(fontSize: 16)),
-            Text("Longitude: $long", style: const TextStyle(fontSize: 16)),
+      
             Text(
               "Location Name: $locationName",
               style: const TextStyle(fontSize: 16),

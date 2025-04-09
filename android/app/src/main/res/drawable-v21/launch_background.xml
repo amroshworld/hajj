@@ -7,6 +7,6 @@
      <item>
          <bitmap
              android:gravity="center"
-             android:src="@mipmap/amr" />
+             android:src="@drawable/moh_logo" />
      </item>
 </layer-list>

@@ -34,7 +34,11 @@ class LocationData {
     }
   }
 
-  Future<String> getLocationName(double latitude, double longitude) async {
+  Future<String> getLocationName() async {
+    Position locationData = await getCurrentLocation();
+    double latitude = locationData.latitude;
+    double longitude = locationData.longitude;
+
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
         latitude,

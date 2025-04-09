@@ -6,7 +6,7 @@
     <application
         android:label="hajj"
         android:name="${applicationName}"
-        android:icon="@mipmap/amr">
+        android:icon="@mipmap/moh_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
